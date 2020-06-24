@@ -1,0 +1,25 @@
+﻿@model MediaWeb.Models.Movie.MovieEditViewModel
+
+<form asp-controller="Movie" asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input class="form-control" asp-for="Title" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReleaseDate"></label>
+        <input class="form-control" asp-for="ReleaseDate" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Summary"></label>
+        <input class="form-control" asp-for="Summary" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Photo"></label>
+        <input class="form-control" asp-for="Photo" />
+    </div> 
+
+    <button class="btn btn-primary" type="submit">Edit Movie</button>
+</form>

@@ -1,0 +1,33 @@
+﻿@model MediaWeb.Models.Movie.MovieCreateViewModel
+
+    <form asp-controller="Movie" asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input class="form-control" asp-for="Title" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ReleaseDate"></label>
+            <input class="form-control" asp-for="ReleaseDate" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Summary"></label>
+            <input class="form-control" asp-for="Summary" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Photo"></label>
+            <input class="form-control" asp-for="Photo" />
+        </div>
+
+        @if (Model.Genres.Count > 0)
+        {
+            <div class="form-group">
+                <label asp-for="SelectedGenres"></label>
+                <select multiple class="form-control" asp-for="SelectedGenres" asp-items="@Model.Genres"></select>/>
+            </div>
+        }       
+
+        <button class="btn btn-primary" type="submit">Create Movie</button>
+    </form>
