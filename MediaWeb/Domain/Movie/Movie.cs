@@ -15,6 +15,6 @@ namespace MediaWeb.Domain.Movie
         public ICollection<MovieActor> MovieActors { get; set; }
         public ICollection<MovieDirector> MovieDirectors { get; set; }
         public ICollection<MovieGenre> MovieGenres { get; set; }
-        public List<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<MovieReview> MovieReviews { get; set; }
     }
 }

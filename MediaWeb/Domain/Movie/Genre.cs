@@ -1,4 +1,5 @@
-﻿using MediaWeb.Domain.TVShow;
+﻿using MediaWeb.Domain.Music;
+using MediaWeb.Domain.TVShow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace MediaWeb.Domain.Movie
         public string Name { get; set; }
         public IEnumerable<MovieGenre> MovieGenres { get; set; }
         public IEnumerable<TVShowGenre> TVShowGenres { get; set; }
+        public IEnumerable<MusicGenre> MusicGenres { get; set; }
     }
 }

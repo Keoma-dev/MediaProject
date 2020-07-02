@@ -11,5 +11,6 @@ namespace MediaWeb.Domain.Music
         public string Name { get; set; }
         public DateTime ReleaseDate { get; set; }
         public List<Song> Songs { get; set; } = new List<Song>();
+        public IEnumerable<MusicReview> AlbumReviews { get; set; }
     }
 }

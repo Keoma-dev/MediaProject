@@ -16,11 +16,9 @@ namespace MediaWeb.Models.Movie
         public string Summary { get; set; }
         public IFormFile Photo { get; set; }
         public List<SelectListItem> Genres { get; set; } = new List<SelectListItem>();
-        public int[] SelectedGenres { get; set; }
-        public List<Genre> NewGenres { get; set; } = new List<Genre>();
-        public List<Actor> Actors { get; set; } = new List<Actor>();
-        public List<Director> Directors { get; set; } = new List<Director>();
-        public string[] createdGenres { get; set; }
-
+        public int[] SelectedGenres { get; set; }     
+        public string createdGenres { get; set; }
+        public string createdActors { get; set; }
+        public string createdDirectors { get; set; }
     }
 }

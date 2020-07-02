@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace MediaWeb.Domain
 {
     public class MediaWebUser : IdentityUser
-    {
+    {       
         public List<Review> Reviews { get; set; } = new List<Review>();
     }
 }

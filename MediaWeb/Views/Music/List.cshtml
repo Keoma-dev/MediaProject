@@ -1,0 +1,8 @@
+﻿@model IEnumerable<MediaWeb.Models.Music.MusicListViewModel>
+
+@foreach (var item in Model)
+{
+    <p>
+        <a asp-controller="Music" asp-action="Detail" asp-route-id="@item.Id">@item.Title</a>
+    </p>
+}

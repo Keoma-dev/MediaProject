@@ -203,3 +203,11 @@ C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\View
 C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\Views\Movie\Detail.cshtml.g.cs
 C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\Views\Movie\Edit.cshtml.g.cs
 C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\Views\Movie\List.cshtml.g.cs
+C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\Views\Music\Create.cshtml.g.cs
+C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\Views\Music\Detail.cshtml.g.cs
+C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\Views\Music\Index.cshtml.g.cs
+C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\Views\Music\List.cshtml.g.cs
+C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\Views\Music\Delete.cshtml.g.cs
+C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\Views\Music\Edit.cshtml.g.cs
+C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\Views\User\Index.cshtml.g.cs
+C:\Users\Keoma\source\repos\MediaWeb\MediaWeb\obj\Debug\netcoreapp3.1\Razor\Views\User\Review.cshtml.g.cs

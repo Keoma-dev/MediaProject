@@ -1,0 +1,9 @@
+﻿@model MediaWeb.Models.User.UserIndexViewModel
+
+<strong>Hello @User.Identity.Name</strong>
+
+<strong>My Reviews</strong>
+@foreach (var item in Model.Reviews)
+{
+    <ul>@item.Title</ul>
+}

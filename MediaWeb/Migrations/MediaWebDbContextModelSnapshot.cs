@@ -198,6 +198,21 @@ namespace MediaWeb.Migrations
                     b.ToTable("MovieGenre");
                 });
 
+            modelBuilder.Entity("MediaWeb.Domain.Movie.MovieReview", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MovieId", "ReviewId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("MovieReview");
+                });
+
             modelBuilder.Entity("MediaWeb.Domain.Music.Album", b =>
                 {
                     b.Property<int>("Id")
@@ -231,6 +246,41 @@ namespace MediaWeb.Migrations
                     b.ToTable("Artists");
                 });
 
+            modelBuilder.Entity("MediaWeb.Domain.Music.MusicGenre", b =>
+                {
+                    b.Property<int>("SongId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SongId", "GenreId");
+
+                    b.HasIndex("GenreId");
+
+                    b.ToTable("MusicGenre");
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.Music.MusicReview", b =>
+                {
+                    b.Property<int>("AlbumId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SongId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AlbumId", "ReviewId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("SongId");
+
+                    b.ToTable("MusicReview");
+                });
+
             modelBuilder.Entity("MediaWeb.Domain.Music.Song", b =>
                 {
                     b.Property<int>("Id")
@@ -246,6 +296,9 @@ namespace MediaWeb.Migrations
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("SongFile")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -378,6 +431,21 @@ namespace MediaWeb.Migrations
                     b.ToTable("PodcastHost");
                 });
 
+            modelBuilder.Entity("MediaWeb.Domain.Podcast.PodcastReview", b =>
+                {
+                    b.Property<int>("PodcastId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PodcastId", "ReviewId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("PodcastReview");
+                });
+
             modelBuilder.Entity("MediaWeb.Domain.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -388,26 +456,15 @@ namespace MediaWeb.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Grade")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MediaWebUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MediaWebUserId1")
+                    b.Property<string>("MediaWebUserId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("MovieId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MediaWebUserId1");
-
-                    b.HasIndex("MovieId");
+                    b.HasIndex("MediaWebUserId");
 
                     b.ToTable("Reviews");
                 });
@@ -511,6 +568,26 @@ namespace MediaWeb.Migrations
                     b.HasIndex("GenreId");
 
                     b.ToTable("TVShowGenre");
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.TVShow.TVShowReview", b =>
+                {
+                    b.Property<int>("EpisodeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TVShowId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EpisodeId", "ReviewId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("TVShowId");
+
+                    b.ToTable("TVShowReview");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.TVShow.TVshow", b =>
@@ -714,6 +791,57 @@ namespace MediaWeb.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MediaWeb.Domain.Movie.MovieReview", b =>
+                {
+                    b.HasOne("MediaWeb.Domain.Movie.Movie", "Movie")
+                        .WithMany("MovieReviews")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaWeb.Domain.Review", "Review")
+                        .WithMany("MovieReviews")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.Music.MusicGenre", b =>
+                {
+                    b.HasOne("MediaWeb.Domain.Movie.Genre", "Genre")
+                        .WithMany("MusicGenres")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaWeb.Domain.Music.Song", "Song")
+                        .WithMany("MusicGenres")
+                        .HasForeignKey("SongId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.Music.MusicReview", b =>
+                {
+                    b.HasOne("MediaWeb.Domain.Music.Album", "Album")
+                        .WithMany("AlbumReviews")
+                        .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaWeb.Domain.Review", "Review")
+                        .WithMany("MusicReviews")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaWeb.Domain.Music.Song", "Song")
+                        .WithMany("SongReviews")
+                        .HasForeignKey("SongId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MediaWeb.Domain.Music.Song", b =>
                 {
                     b.HasOne("MediaWeb.Domain.Music.Album", null)
@@ -777,15 +905,26 @@ namespace MediaWeb.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MediaWeb.Domain.Podcast.PodcastReview", b =>
+                {
+                    b.HasOne("MediaWeb.Domain.PodCast", "PodCast")
+                        .WithMany("PodcastReviews")
+                        .HasForeignKey("PodcastId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaWeb.Domain.Review", "Review")
+                        .WithMany("PodcastReviews")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MediaWeb.Domain.Review", b =>
                 {
                     b.HasOne("MediaWeb.Domain.MediaWebUser", "MediaWebUser")
                         .WithMany("Reviews")
-                        .HasForeignKey("MediaWebUserId1");
-
-                    b.HasOne("MediaWeb.Domain.Movie.Movie", null)
-                        .WithMany("Reviews")
-                        .HasForeignKey("MovieId");
+                        .HasForeignKey("MediaWebUserId");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.TVShow.Episode", b =>
@@ -865,6 +1004,27 @@ namespace MediaWeb.Migrations
 
                     b.HasOne("MediaWeb.Domain.TVShow.TVshow", "TVShow")
                         .WithMany("TVShowGenres")
+                        .HasForeignKey("TVShowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.TVShow.TVShowReview", b =>
+                {
+                    b.HasOne("MediaWeb.Domain.TVShow.Episode", "Episode")
+                        .WithMany("EpisodeReviews")
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaWeb.Domain.Review", "Review")
+                        .WithMany("TVShowReviews")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaWeb.Domain.TVShow.TVshow", "TvShow")
+                        .WithMany("TVShowReviews")
                         .HasForeignKey("TVShowId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

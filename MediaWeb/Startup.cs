@@ -71,9 +71,17 @@ namespace MediaWeb
         }
         private void CreateRolesAndAssignUsers(IServiceProvider serviceProvider)
         {
-            CreateRoleIfNotExists(serviceProvider, "Administrator");
+            CreateRoleIfNotExists(serviceProvider, "Admin");
             CreateRoleIfNotExists(serviceProvider, "User");
-            CreateRoleIfNotExists(serviceProvider, "Public");
+
+            var userManager = serviceProvider.GetRequiredService<UserManager<MediaWebUser>>();
+
+            var keoma = userManager.FindByEmailAsync("ploviekeoma@hotmail.com").Result;
+
+            if (!userManager.IsInRoleAsync(keoma, "Admin").Result)
+            {
+                userManager.AddToRoleAsync(keoma, "Admin").Wait();
+            }
         }
 
         private static void CreateRoleIfNotExists(IServiceProvider serviceProvider, string role)

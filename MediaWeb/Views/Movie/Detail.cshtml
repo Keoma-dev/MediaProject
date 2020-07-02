@@ -12,7 +12,26 @@
 <strong>Summary</strong>
 <p>@Model.Summary</p>
 
+<strong>Genres</strong>
+@foreach (var item in Model.MovieGenres)
+{
+    <li>@item</li>
+}
 
+<p>
+    <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id">Delete</a> |
+    <a asp-controller="User" asp-action="Review" asp-route-id="@Model.Id">Write a Review</a>
+</p>
 
-<a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-<a asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+<strong>Review</strong>
+
+@if (Model.MovieReviews != null)
+{
+    foreach (var item in Model.MovieReviews)
+    {       
+         <div>@item.Review.Title</div>
+         <div style="float:right">@item.Review.MediaWebUserId</div>      
+         <div>@item.Review.Content</div>       
+    }
+}

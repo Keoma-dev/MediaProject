@@ -13,7 +13,7 @@ namespace MediaWeb.Domain
         public string Description { get; set; }
         public DateTime ReleaseDate { get; set; }
         public IEnumerable<PodcastHost> PodCastHosts { get; set; }
-
         public IEnumerable<PodcastGuest> PodCastGuests { get; set; }
+        public IEnumerable<PodcastReview> PodcastReviews { get; set; }
     }
 }

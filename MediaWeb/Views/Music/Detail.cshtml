@@ -1,0 +1,21 @@
+﻿@model MediaWeb.Models.Music.MusicDetailViewModel
+
+<h1>@Model.Title</h1>
+
+<div style="float: right;">
+    <audio src="@Model.SongFile" controls="controls"></audio>
+</div>
+
+<strong>Release Date</strong>
+<p>@Model.ReleaseDate.ToString("dd/MM/yyyy")</p>
+
+<strong>Genres</strong>
+@foreach (var item in Model.MusicGenres)
+{
+    <li>@item</li>
+}
+
+<p>
+    <a asp-controller="Music" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-controller="Music" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+</p>
