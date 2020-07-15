@@ -12,10 +12,7 @@ namespace MediaWeb.Models.Music
         public int Id { get; set; }
         public string Title { get; set; }
         public DateTime ReleaseDate { get; set; }        
-        public IFormFile Song { get; set; }
-        public List<SelectListItem> Genres { get; set; } = new List<SelectListItem>();
-        public int[] SelectedGenres { get; set; }
-        public string createdGenres { get; set; }
+        public IFormFile Song { get; set; }        
         public string createdArtists { get; set; }
         
     }

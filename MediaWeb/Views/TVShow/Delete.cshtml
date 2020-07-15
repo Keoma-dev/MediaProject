@@ -1,0 +1,7 @@
+﻿@model MediaWeb.Models.TVShow.TVShowDeleteViewModel
+Are you sure you want to delete @Model.Name?
+
+<form asp-controller="TVShow" asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-outline-danger">Delete</button>
+</form>
+<a asp-controller="TVshow" asp-action="Index">Back</a>

@@ -135,6 +135,20 @@ namespace MediaWeb.Database
                 .WithMany(g => g.MusicGenres)
                 .HasForeignKey(mg => mg.GenreId);
 
+            //Many to Many Song & Playlist
+            builder.Entity<PlaylistSong>()
+               .HasKey(mg => new { mg.SongId, mg.PlayListId });
+
+            builder.Entity<PlaylistSong>()
+                .HasOne(mg => mg.Song)
+                .WithMany(s => s.PlaylistSongs)
+                .HasForeignKey(mg => mg.SongId);
+
+            builder.Entity<PlaylistSong>()
+                .HasOne(mg => mg.PlayList)
+                .WithMany(g => g.PlaylistSongs)
+                .HasForeignKey(mg => mg.PlayListId);
+
             // Many to Many Podcast & Host
             builder.Entity<PodcastHost>()
             .HasKey(ph => new { ph.PodcastId, ph.HostId });
@@ -231,49 +245,8 @@ namespace MediaWeb.Database
             builder.Entity<TVShowReview>()
                 .HasOne(tr => tr.Review)
                 .WithMany(r => r.TVShowReviews)
-                .HasForeignKey(tr => tr.ReviewId);
-
-            // Many to Many Episode & Actor
-            builder.Entity<EpisodeActor>()
-            .HasKey(ea => new { ea.EpisodeId, ea.ActorId });
-
-        builder.Entity<EpisodeActor>()
-            .HasOne(ea => ea.Episode)
-            .WithMany(e => e.EpisodeActors)
-            .HasForeignKey(ea => ea.EpisodeId);
-
-        builder.Entity<EpisodeActor>()
-            .HasOne(ea => ea.Actor)
-            .WithMany(a => a.EpisodeActors)
-            .HasForeignKey(ea => ea.ActorId);
-
-        // Many to Many Episode & Director
-        builder.Entity<EpisodeDirector>()
-           .HasKey(ed => new { ed.EpisodeId, ed.DirectorId });
-
-        builder.Entity<EpisodeDirector>()
-            .HasOne(ed => ed.Episode)
-            .WithMany(e => e.EpisodeDirectors)
-            .HasForeignKey(ed => ed.EpisodeId);
-
-        builder.Entity<EpisodeDirector>()
-            .HasOne(ed => ed.Director)
-            .WithMany(d => d.EpisodeDirectors)
-            .HasForeignKey(ed => ed.DirectorId);
-
-            // Many to Many Episode & Review
-            builder.Entity<TVShowReview>()
-          .HasKey(er => new { er.EpisodeId, er.ReviewId });
-
-            builder.Entity<TVShowReview>()
-                .HasOne(er => er.Episode)
-                .WithMany(e => e.EpisodeReviews)
-                .HasForeignKey(er => er.EpisodeId);
-
-            builder.Entity<TVShowReview>()
-               .HasOne(er => er.Review)
-               .WithMany(r => r.TVShowReviews)
-               .HasForeignKey(er => er.ReviewId);
+                .HasForeignKey(tr => tr.ReviewId);         
+      
         }
 
     public DbSet<Movie> Movies { get; set; }

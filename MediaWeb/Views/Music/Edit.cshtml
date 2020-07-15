@@ -1,20 +1,25 @@
 ﻿@model MediaWeb.Models.Music.MusicEditViewModel
 
-<form asp-controller="Music" asp-action="Edit" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label asp-for="Title"></label>
-        <input class="form-control" asp-for="Title" />
-    </div>
+    <form asp-controller="Music" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input class="form-control" asp-for="Title" />
+        </div>
 
-    <div class="form-group">
-        <label asp-for="ReleaseDate"></label>
-        <input class="form-control" asp-for="ReleaseDate" />
-    </div>
-  
-    <div class="form-group">
-        <label asp-for="Song"></label>
-        <input class="form-control" asp-for="Song" />
-    </div>
+        <div class="form-group">
+            <label>Release Date</label>
+            <input class="form-control" asp-for="ReleaseDate" type="date" />
+        </div>
 
-    <button class="btn btn-primary" type="submit">Edit Song</button>
-</form>
+        <div class="form-group">
+            <label asp-for="Song"></label>
+            <input class="form-control" asp-for="Song" />
+        </div>
+
+        <div class="form-group">
+            <label>Artist(s):</label>
+            <input class="form-control" asp-for="createdArtists" placeholder="Artist 1, artist 2,..." />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Edit Song</button>
+    </form>

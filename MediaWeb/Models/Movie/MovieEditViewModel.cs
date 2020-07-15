@@ -11,6 +11,7 @@ namespace MediaWeb.Models.Movie
         public string Title { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string Summary { get; set; }
+        public string PhotoUrl { get; set; }
         public IFormFile Photo { get; set; }
 
     }

@@ -1,21 +1,82 @@
 ﻿@model MediaWeb.Models.Music.MusicDetailViewModel
 
-<h1>@Model.Title</h1>
-
-<div style="float: right;">
-    <audio src="@Model.SongFile" controls="controls"></audio>
-</div>
-
-<strong>Release Date</strong>
-<p>@Model.ReleaseDate.ToString("dd/MM/yyyy")</p>
-
-<strong>Genres</strong>
-@foreach (var item in Model.MusicGenres)
+@if (Model.IsHidden == true && !User.IsInRole("Admin"))
 {
-    <li>@item</li>
+    <strong>This page is not available!</strong>
 }
+else
+{
+    <h1>@Model.Title</h1>
+
+    <div style="float: right;">
+        <audio src="@Model.SongFile" controls="controls"></audio>
+    </div>
+
+    <strong>Release Date</strong>
+    <p>@Model.ReleaseDate.ToString("dd/MM/yyyy")</p>
+
+    <strong>Artist(s)</strong>
+    @foreach (var item in Model.SongArtists)
+    {
+        <li>@item.Artist.Name</li>
+    }
 
 <p>
-    <a asp-controller="Music" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-controller="Music" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-</p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <table>
+            <tr>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Actions
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="dropdown-item" asp-controller="User" asp-action="SongReview" asp-route-id="@Model.Id">Write a Review</a>
+                                <a class="dropdown-item" asp-controller="Music" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                                <a class="dropdown-item" asp-controller="Music" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                                <a class="dropdown-item" asp-controller="Music" asp-action="HideSong" asp-route-id="@Model.Id">Hide Song</a>
+                            }
+                            else if (User.IsInRole("User"))
+                            {
+                                <a class="dropdown-item" asp-controller="User" asp-action="SongReview" asp-route-id="@Model.Id">Write a Review</a>
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" style="background-color:lightblue" type="button" id="dropdownPlaylists" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Add to Playlist
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownPlaylists">
+                            @foreach (var playlist in Model.MyPlaylists)
+                            {
+                                <a class="dropdown-item" asp-controller="Music" asp-action="AddToPlaylist" asp-route-id="@Model.Id" asp-route-playListName="@playlist.Name">@playlist.Name</a>
+                            }
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+    </p>
+
+    <strong>Reviews</strong>
+
+    <div class="card-columns">
+        @foreach (var item in Model.SongReviews)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5 style="border-bottom: 1px solid black">@item.Review.Title</h5>
+                    @item.Review.Content
+                    <footer style="color: gray; font-size:10px;">User: @item.Review.MediaWebUser.UserName</footer>
+                </div>
+            </div>
+        }
+    </div>
+
+}

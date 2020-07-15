@@ -1,0 +1,27 @@
+﻿@model MediaWeb.Models.Music.PlaylistListsViewModel
+
+    
+                <table style="float:left">
+                    <tr><th>My Playlists</th></tr>
+                    @foreach (var privatelist in Model.PrivateLists)
+                    {
+                        <tr><td><a asp-controller="Music" asp-action="ShowPlayList" asp-route-id="@privatelist.Id">@privatelist.Name</a></td></tr>
+                    }
+                </table>
+           
+                <table>
+                    <tr><th>Public Playlists</th></tr>
+                    @foreach (var playlist in Model.PublicLists)
+                    {
+                        <tr><td><a asp-controller="Music" asp-action="ShowPlayList" asp-route-id="@playlist.Id">@playlist.Name</a></td></tr>
+                    }
+                </table>
+      
+
+
+ <style>
+     th{
+         width:350px;
+         border-bottom: 1px solid black;
+     }
+ </style>

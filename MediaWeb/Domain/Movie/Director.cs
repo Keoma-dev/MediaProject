@@ -11,7 +11,6 @@ namespace MediaWeb.Domain.Movie
         public int Id { get; set; }
         public string Name { get; set; }
         public ICollection<MovieDirector> MovieDirectors { get; set; }
-        public IEnumerable<TVShowDirector> TVShowDirectors { get; set; }
-        public IEnumerable<EpisodeDirector> EpisodeDirectors { get; set; }
+        public IEnumerable<TVShowDirector> TVShowDirectors { get; set; }      
     }
 }

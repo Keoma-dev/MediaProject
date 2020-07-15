@@ -16,6 +16,7 @@ namespace MediaWeb.Domain
         public string Content { get; set; }
         public MediaWebUser MediaWebUser { get; set; }
         public string MediaWebUserId { get; set; }
+        public bool IsChecked { get; set; }
         public IEnumerable<MovieReview> MovieReviews { get; set; }
         public IEnumerable<MusicReview> MusicReviews { get; set; }
         public IEnumerable<PodcastReview> PodcastReviews { get; set; }

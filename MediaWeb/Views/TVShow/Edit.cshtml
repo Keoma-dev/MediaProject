@@ -1,0 +1,25 @@
+﻿@model MediaWeb.Models.TVShow.TVShowEditViewModel
+
+<form asp-controller="TVShow" asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input class="form-control" asp-for="Name" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReleaseDate"></label>
+        <input class="form-control" asp-for="ReleaseDate" type ="date"/>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Summary"></label>
+        <input class="form-control" asp-for="Summary" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Picture"></label>
+        <input class="form-control" asp-for="Picture" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Edit TV Show</button>
+</form>

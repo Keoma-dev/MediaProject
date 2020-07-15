@@ -1,0 +1,8 @@
+﻿@model IEnumerable<MediaWeb.Models.TVShow.TVShowListViewModel>
+
+@foreach (var item in Model)
+{
+    <p>
+        <a asp-controller="TVShow" asp-action="Detail" asp-route-id="@item.Id">@item.Name</a>
+    </p>
+}

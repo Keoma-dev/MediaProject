@@ -11,8 +11,9 @@ namespace MediaWeb.Models.User
         public string UserName { get; set; }
         public IEnumerable<Review> Reviews { get; set; }
         public IEnumerable<string> Movies { get; set; }
-        public IEnumerable<string> Playlists { get; set; }
+        public IEnumerable<PlayList> Playlists { get; set; }
         public IEnumerable<string> Podcasts { get; set; }
         public IEnumerable<string> TVShows { get; set; }
+        public IEnumerable<MediaWebUser> Users { get; set; }
     }
 }

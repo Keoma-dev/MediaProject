@@ -12,6 +12,7 @@ namespace MediaWeb.Domain.Movie
         public DateTime ReleaseDate { get; set; }
         public string Summary { get; set; }
         public string Photo { get; set; }
+        public bool IsHidden { get; set; }
         public ICollection<MovieActor> MovieActors { get; set; }
         public ICollection<MovieDirector> MovieDirectors { get; set; }
         public ICollection<MovieGenre> MovieGenres { get; set; }

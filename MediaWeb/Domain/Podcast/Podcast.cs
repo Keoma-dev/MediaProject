@@ -12,6 +12,8 @@ namespace MediaWeb.Domain
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime ReleaseDate { get; set; }
+        public string File { get; set; }
+        public bool IsHidden { get; set; } = false;
         public IEnumerable<PodcastHost> PodCastHosts { get; set; }
         public IEnumerable<PodcastGuest> PodCastGuests { get; set; }
         public IEnumerable<PodcastReview> PodcastReviews { get; set; }

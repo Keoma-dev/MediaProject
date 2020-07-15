@@ -136,6 +136,9 @@ namespace MediaWeb.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsHidden")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
@@ -291,8 +294,8 @@ namespace MediaWeb.Migrations
                     b.Property<int?>("AlbumId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PlayListId")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsHidden")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
@@ -306,8 +309,6 @@ namespace MediaWeb.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
-
-                    b.HasIndex("PlayListId");
 
                     b.ToTable("Songs");
                 });
@@ -334,10 +335,10 @@ namespace MediaWeb.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("MediaWebUserId")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("MediaWebUserId1")
+                    b.Property<string>("MediaWebUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
@@ -345,9 +346,24 @@ namespace MediaWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MediaWebUserId1");
+                    b.HasIndex("MediaWebUserId");
 
                     b.ToTable("PlayLists");
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.PlaylistSong", b =>
+                {
+                    b.Property<int>("SongId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayListId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SongId", "PlayListId");
+
+                    b.HasIndex("PlayListId");
+
+                    b.ToTable("PlaylistSong");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.PodCast", b =>
@@ -359,6 +375,12 @@ namespace MediaWeb.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("File")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsHidden")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
@@ -456,6 +478,9 @@ namespace MediaWeb.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MediaWebUserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -476,6 +501,9 @@ namespace MediaWeb.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("EpisodeNumber")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -493,36 +521,6 @@ namespace MediaWeb.Migrations
                     b.HasIndex("TVshowId");
 
                     b.ToTable("Episodes");
-                });
-
-            modelBuilder.Entity("MediaWeb.Domain.TVShow.EpisodeActor", b =>
-                {
-                    b.Property<int>("EpisodeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ActorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EpisodeId", "ActorId");
-
-                    b.HasIndex("ActorId");
-
-                    b.ToTable("EpisodeActor");
-                });
-
-            modelBuilder.Entity("MediaWeb.Domain.TVShow.EpisodeDirector", b =>
-                {
-                    b.Property<int>("EpisodeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DirectorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EpisodeId", "DirectorId");
-
-                    b.HasIndex("DirectorId");
-
-                    b.ToTable("EpisodeDirector");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.TVShow.TVShowActor", b =>
@@ -572,20 +570,20 @@ namespace MediaWeb.Migrations
 
             modelBuilder.Entity("MediaWeb.Domain.TVShow.TVShowReview", b =>
                 {
-                    b.Property<int>("EpisodeId")
+                    b.Property<int>("TVShowId")
                         .HasColumnType("int");
 
                     b.Property<int>("ReviewId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TVShowId")
+                    b.Property<int>("EpisodeId")
                         .HasColumnType("int");
 
-                    b.HasKey("EpisodeId", "ReviewId");
+                    b.HasKey("TVShowId", "ReviewId");
+
+                    b.HasIndex("EpisodeId");
 
                     b.HasIndex("ReviewId");
-
-                    b.HasIndex("TVShowId");
 
                     b.ToTable("TVShowReview");
                 });
@@ -597,8 +595,17 @@ namespace MediaWeb.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsHidden")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Seasons")
                         .HasColumnType("int");
@@ -847,10 +854,6 @@ namespace MediaWeb.Migrations
                     b.HasOne("MediaWeb.Domain.Music.Album", null)
                         .WithMany("Songs")
                         .HasForeignKey("AlbumId");
-
-                    b.HasOne("MediaWeb.Domain.PlayList", null)
-                        .WithMany("Songs")
-                        .HasForeignKey("PlayListId");
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.Music.SongArtist", b =>
@@ -870,9 +873,24 @@ namespace MediaWeb.Migrations
 
             modelBuilder.Entity("MediaWeb.Domain.PlayList", b =>
                 {
-                    b.HasOne("MediaWeb.Domain.MediaWebUser", "MediaWebUser")
-                        .WithMany()
-                        .HasForeignKey("MediaWebUserId1");
+                    b.HasOne("MediaWeb.Domain.MediaWebUser", null)
+                        .WithMany("PlayLists")
+                        .HasForeignKey("MediaWebUserId");
+                });
+
+            modelBuilder.Entity("MediaWeb.Domain.PlaylistSong", b =>
+                {
+                    b.HasOne("MediaWeb.Domain.PlayList", "PlayList")
+                        .WithMany("PlaylistSongs")
+                        .HasForeignKey("PlayListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MediaWeb.Domain.Music.Song", "Song")
+                        .WithMany("PlaylistSongs")
+                        .HasForeignKey("SongId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MediaWeb.Domain.Podcast.PodcastGuest", b =>
@@ -934,36 +952,6 @@ namespace MediaWeb.Migrations
                         .HasForeignKey("TVshowId");
                 });
 
-            modelBuilder.Entity("MediaWeb.Domain.TVShow.EpisodeActor", b =>
-                {
-                    b.HasOne("MediaWeb.Domain.Movie.Actor", "Actor")
-                        .WithMany("EpisodeActors")
-                        .HasForeignKey("ActorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MediaWeb.Domain.TVShow.Episode", "Episode")
-                        .WithMany("EpisodeActors")
-                        .HasForeignKey("EpisodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MediaWeb.Domain.TVShow.EpisodeDirector", b =>
-                {
-                    b.HasOne("MediaWeb.Domain.Movie.Director", "Director")
-                        .WithMany("EpisodeDirectors")
-                        .HasForeignKey("DirectorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MediaWeb.Domain.TVShow.Episode", "Episode")
-                        .WithMany("EpisodeDirectors")
-                        .HasForeignKey("EpisodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("MediaWeb.Domain.TVShow.TVShowActor", b =>
                 {
                     b.HasOne("MediaWeb.Domain.Movie.Actor", "Actor")
@@ -1012,7 +1000,7 @@ namespace MediaWeb.Migrations
             modelBuilder.Entity("MediaWeb.Domain.TVShow.TVShowReview", b =>
                 {
                     b.HasOne("MediaWeb.Domain.TVShow.Episode", "Episode")
-                        .WithMany("EpisodeReviews")
+                        .WithMany()
                         .HasForeignKey("EpisodeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -1,0 +1,29 @@
+﻿@model MediaWeb.Models.User.ReviewShowViewModel
+
+@if (Model.Reviews.Count > 0)
+{
+<div class="card-columns">
+    @foreach (var item in Model.Reviews)
+    {
+    <div class="card">
+        <div class="card-body">
+            <h5>@item.Title</h5>
+            @item.Content
+        </div>
+        <table>
+            <tr>
+                <td>
+                    <form asp-controller="User" asp-action="CheckReview" method="post" asp-route-id="@item.Id"><button type="submit" style="background-color:green">Validate</button></form>
+                    </td>
+                <td>
+                    <form asp-controller="User" asp-action="DeleteReview" method="post" asp-route-id="@item.Id"><button type="submit" style="background-color:red">Delete</button></form>
+                </td>
+            </tr>
+        </table>
+    </div>
+    }
+</div> 
+}else
+	{
+	         <p>There are currently no Reviews needing validation!</p>
+	}

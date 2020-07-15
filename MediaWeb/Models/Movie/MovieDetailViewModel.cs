@@ -13,8 +13,10 @@ namespace MediaWeb.Models.Movie
         public DateTime ReleaseDate { get; set; }
         public string Summary { get; set; }
         public string Photo { get; set; }
-
-        public IEnumerable<string> MovieGenres { get; set; }
+        public bool IsHidden { get; set; }
+        public IEnumerable<MovieGenre> MovieGenres { get; set; }
         public IEnumerable<MovieReview> MovieReviews { get; set; }
+        public IEnumerable<MovieActor> MovieActors { get; set; }
+        public IEnumerable<MovieDirector> MovieDirectors { get; set; }
     }
 }

@@ -1,0 +1,25 @@
+﻿@model MediaWeb.Models.Podcast.PodcastEditViewModel
+
+<form asp-controller="Podcast" asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input class="form-control" asp-for="Title" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReleaseDate"></label>
+        <input class="form-control" asp-for="ReleaseDate" type="date"/>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input class="form-control" asp-for="Description" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PodcastLink"></label>
+        <input class="form-control" asp-for="PodcastLink" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Edit Podcast</button>
+</form>

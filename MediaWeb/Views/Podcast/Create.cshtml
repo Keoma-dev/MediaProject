@@ -1,0 +1,35 @@
+﻿@model MediaWeb.Models.Podcast.PodcastCreateViewModel
+
+<form asp-controller="Podcast" asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input class="form-control" asp-for="Title" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ReleaseDate"></label>
+        <input class="form-control" asp-for="ReleaseDate" type="date"/>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input class="form-control" asp-for="Description" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PodcastLink"></label>
+        <input class="form-control" asp-for="PodcastLink" />
+    </div>
+
+    <div class="form-group">
+        <label>Host(s):</label>
+        <input class="form-control" asp-for="createdHosts" placeholder="Host 1, host 2,..." />
+    </div>
+
+    <div class="form-group">
+        <label>Guest(s):</label>
+        <input class="form-control" asp-for="createdGuests" placeholder="Guest 1, guest 2, ..." />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Create Podcast</button>
+</form>

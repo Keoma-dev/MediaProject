@@ -1,0 +1,15 @@
+﻿@model MediaWeb.Models.User.ReviewCreateViewModel
+
+    <form asp-controller="User" asp-action="PodcastReview" method="post">
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input class="form-control" asp-for="Title" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Content"></label>
+            <textarea class="form-control" rows="5" asp-for="Content"></textarea>
+        </div>
+
+        <button class="btn btn-primary"type="submit">Submit Review</button>
+    </form>

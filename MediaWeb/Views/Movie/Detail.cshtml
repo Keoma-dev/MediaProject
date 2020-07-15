@@ -1,37 +1,87 @@
 ﻿@model MediaWeb.Models.Movie.MovieDetailViewModel
 
-<h1>@Model.Title</h1>
-
-<div style="float: right;">
-    <img src="@Model.Photo" />
-</div>
-
-<strong>Release Date</strong>
-<p>@Model.ReleaseDate.ToString("dd/MM/yyyy")</p>
-
-<strong>Summary</strong>
-<p>@Model.Summary</p>
-
-<strong>Genres</strong>
-@foreach (var item in Model.MovieGenres)
+@if (Model.IsHidden == true && !User.IsInRole("Admin"))
 {
-    <li>@item</li>
+    <strong>This page is not available!</strong>
 }
-
-<p>
-    <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id">Delete</a> |
-    <a asp-controller="User" asp-action="Review" asp-route-id="@Model.Id">Write a Review</a>
-</p>
-
-<strong>Review</strong>
-
-@if (Model.MovieReviews != null)
+else
 {
-    foreach (var item in Model.MovieReviews)
-    {       
-         <div>@item.Review.Title</div>
-         <div style="float:right">@item.Review.MediaWebUserId</div>      
-         <div>@item.Review.Content</div>       
-    }
+    <h1>@Model.Title</h1>
+
+    <div style="float: right;">
+        <img id="imagetypeone" src="@Model.Photo" />
+    </div>
+
+    <strong>Release Date</strong>
+    <p>@Model.ReleaseDate.ToString("dd/MM/yyyy")</p>
+
+    <strong>Summary</strong>
+    <p>@Model.Summary</p>
+
+    <strong>Genres</strong>
+    <p>
+        <ul>
+            @foreach (var item in Model.MovieGenres)
+            {
+                <li>@item.Genre.Name</li>
+            }
+        </ul>
+    </p>
+    <strong>Director(s)</strong>
+    <p>
+        <ul>
+            @foreach (var director in Model.MovieDirectors)
+            {
+                <li>@director.Director.Name</li>
+            }
+        </ul>
+    </p>
+    <strong>Actor(s)</strong>
+    <p>
+        <ul>
+            @foreach (var actor in Model.MovieActors)
+            {
+                <li>@actor.Actor.Name</li>
+            }
+        </ul>
+    </p>
+    <p>
+        @if (User.Identity.IsAuthenticated)
+        {
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Actions
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="dropdown-item" asp-controller="User" asp-action="MovieReview" asp-route-id="@Model.Id">Write a Review</a>
+                    <a class="dropdown-item" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                    <a class="dropdown-item" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                    <a class="dropdown-item" asp-controller="Movie" asp-action="HideMovie" asp-route-id="@Model.Id">Hide Movie</a>
+                }
+                else if (User.IsInRole("User"))
+                {
+                    <a class="dropdown-item" asp-controller="User" asp-action="MovieReview" asp-route-id="@Model.Id">Write a Review</a>
+                }
+            </div>
+        </div>
+        }
+    </p>
+
+    <strong>Reviews</strong>
+
+    <div class="card-columns">
+        @foreach (var item in Model.MovieReviews)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5 style="border-bottom: 1px solid black">@item.Review.Title</h5>
+                    @item.Review.Content
+                    <footer style="color: gray; font-size:10px;">User: @item.Review.MediaWebUser.UserName</footer>
+                </div>
+            </div>
+        }
+    </div>
+
 }

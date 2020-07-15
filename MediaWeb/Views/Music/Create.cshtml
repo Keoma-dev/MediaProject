@@ -7,8 +7,8 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="ReleaseDate"></label>
-        <input class="form-control" asp-for="ReleaseDate" />
+        <label>Release Date</label>
+        <input class="form-control" asp-for="ReleaseDate" type="date" />
     </div>
 
     <div class="form-group">
@@ -16,22 +16,9 @@
         <input class="form-control" asp-for="Song" />
     </div>
 
-    @if (Model.Genres.Count > 0)
-    {
-        <div class="form-group">
-            <label>Select one or multiple of the following genres...</label>
-            <select multiple class="form-control" asp-for="SelectedGenres" asp-items="@Model.Genres"></select>
-        </div>
-    }
-
-    <div class="form-group">
-        <label>... or create new genres.</label>
-        <input class="form-control" asp-for="createdGenres" placeholder="Genre 1, genre 2, ..." />
-    </div>
-
     <div class="form-group">
         <label>Artist(s):</label>
-        <input class="form-control" asp-for="createdArtists" placeholder="Actor 1, actor 2,..." />
+        <input class="form-control" asp-for="createdArtists" placeholder="Artist 1, artist 2,..." />
     </div>
 
     <button class="btn btn-primary" type="submit">Create Song</button>

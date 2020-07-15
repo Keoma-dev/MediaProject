@@ -1,0 +1,61 @@
+﻿@model MediaWeb.Models.Music.PlaylistShowViewModel
+
+<h5>@Model.Name</h5>
+
+
+<audio src="" id="audioplayer">   
+</audio>
+
+<table>
+    <tr>
+        <th id="titleHeader">Title</th>
+        <th id="artistHeader">Artist</th>
+    </tr>
+    @foreach (var item in Model.PlaylistSongs)
+    {
+        <tr>
+            <td>@item.Song.Title</td>
+            <td>
+                @foreach (var songartist in item.Song.SongArtists)
+                {
+                    @songartist.Artist.Name
+                }
+        </td>
+            <td><button type="button" onclick="PlayPause('@item.Song.SongFile')">Play</button></td>
+    </tr>
+}
+</table>
+
+<script>
+    var x = document.getElementsByTagName('audio')[0]    
+
+    function Play(track) {
+        x.src = track;        
+        x.play();      
+        
+    }
+</script>
+
+<style>
+   th{
+       border: 1px solid black;
+       background-color: lightgray;      
+   } 
+   #titleHeader{
+       width:400px;
+   }
+   #artistHeader{
+       width:250px;
+   }
+    td {
+        border-bottom: 1px solid black;
+    }
+    button {
+        width: 40px;
+        height: 40px;              
+    }
+</style>
+
+
+
+

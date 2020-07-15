@@ -1,9 +1,49 @@
 ﻿@model MediaWeb.Models.User.UserIndexViewModel
+@inject Microsoft.AspNetCore.Identity.UserManager<MediaWeb.Domain.MediaWebUser> UserManager
 
-<strong>Hello @User.Identity.Name</strong>
 
-<strong>My Reviews</strong>
-@foreach (var item in Model.Reviews)
-{
-    <ul>@item.Title</ul>
-}
+    <h2>Hello @User.Identity.Name</h2>
+    <div class="card-columns">
+        <form asp-controller="Music" asp-action="PlaylistIndex">
+            <button class="button">
+                <div class="card">
+                    <div class="card-img" style="background-image:url('..//imgs/musicimg.png');"></div>
+                    <div class="card-body">
+                        <h5>Playlists</h5>
+                    </div>
+                </div>
+            </button>
+        </form>
+
+        @if (User.IsInRole("Admin"))
+        {      
+            <form asp-controller="User" asp-action="Reviews">
+                <button class="button">
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('..//imgs/reviewimg.png');"></div>
+                        <div class="card-body">
+                            <h5>Reviews</h5>
+                        </div>
+                    </div>
+                </button>
+            </form>
+            <form asp-controller="User" asp-action="Users">
+                <button class="button">
+                    <div class="card">
+                        <div class="card-img" style="background-image:url('..//imgs/personimg.png');"></div>
+                        <div class="card-body">
+                            <h5>Users</h5>
+                        </div>
+                    </div>
+                </button>
+            </form>
+        }
+    </div>
+
+
+<style>    
+    .button{
+        border:none;
+        width:350px;
+    }    
+</style>

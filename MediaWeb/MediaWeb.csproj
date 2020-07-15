@@ -15,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\imgs\" />
+    <Folder Include="wwwroot\tvshows\" />
+    <Folder Include="wwwroot\podcasts\" />
     <Folder Include="wwwroot\songs\" />
     <Folder Include="wwwroot\pics\" />
   </ItemGroup>

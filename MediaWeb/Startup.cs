@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MediaWeb.Database;
 using MediaWeb.Domain;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace MediaWeb
 {
@@ -33,12 +35,12 @@ namespace MediaWeb
             services.AddDefaultIdentity<MediaWebUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MediaWebDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews();            
             services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor)
         {
             if (env.IsDevelopment())
             {
@@ -63,7 +65,7 @@ namespace MediaWeb
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=User}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
 

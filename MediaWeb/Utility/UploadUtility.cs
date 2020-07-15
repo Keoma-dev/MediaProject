@@ -35,6 +35,16 @@ namespace MediaWeb.Utility
                 return "";
             }
         }
+        public void DeleteFile(string webRootPath, string fileUrl)
+        {
+            if (fileUrl.StartsWith("/"))
+            {
+                fileUrl = fileUrl.Substring(1);
+            }
+
+            string pathName = Path.Combine(webRootPath, fileUrl);
+            System.IO.File.Delete(pathName);
+        }
        
     }
 }

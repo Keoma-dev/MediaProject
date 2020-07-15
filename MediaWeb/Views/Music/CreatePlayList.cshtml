@@ -1,0 +1,22 @@
+﻿@model MediaWeb.Models.Music.PlaylistCreateViewModel
+
+    <form asp-controller="Music" asp-action="CreatePlayList" method="post">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input class="form-control" asp-for="Name" />
+        </div>
+
+        @if (Model.Songs.Count > 0)
+        {
+            <div class="form-group">
+                <label>Select one or multiple of the following songs...</label>
+                <select multiple class="form-control" asp-for="SelectedSongs" asp-items="@Model.Songs"></select>
+            </div>
+        }
+       <div class="form-group form-check">
+           <input type="checkbox" class="form-check-input" asp-for="IsPrivate" value="True" />
+           <label>Private</label>
+       </div>
+
+        <button class="btn btn-primary" type="submit">Create Playlist</button>
+    </form>

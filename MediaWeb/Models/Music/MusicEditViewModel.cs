@@ -9,7 +9,9 @@ namespace MediaWeb.Models.Music
     public class MusicEditViewModel
     {
         public string Title { get; set; }
-        public DateTime ReleaseDate { get; set; }        
+        public DateTime ReleaseDate { get; set; }
+        public string SongFile { get; set; }
         public IFormFile Song { get; set; }
+        public string createdArtists { get; set; }
     }
 }

@@ -11,8 +11,7 @@ namespace MediaWeb.Domain.TVShow
         public string Name { get; set; }
         public string Summary { get; set; }
         public int Season { get; set; }
-        public IEnumerable<EpisodeActor> EpisodeActors { get; set; }
-        public IEnumerable<EpisodeDirector> EpisodeDirectors { get; set; }
-        public IEnumerable<TVShowReview> EpisodeReviews { get; set; }
+        public int EpisodeNumber { get; set; }
+
     }
 }

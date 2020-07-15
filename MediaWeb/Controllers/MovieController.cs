@@ -18,46 +18,54 @@ namespace MediaWeb.Controllers
     public class MovieController : Controller
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly MediaWebDbContext _mediaWebDbContext;        
+        private readonly MediaWebDbContext _mediaWebDbContext;
+        private readonly UploadUtility _uploadUtility;
 
         public MovieController(IWebHostEnvironment hostingEnvironment, MediaWebDbContext mediaWebDbContext)
         {
             _hostingEnvironment = hostingEnvironment;
             _mediaWebDbContext = mediaWebDbContext;
+            _uploadUtility = new UploadUtility();
         }
         public  IActionResult Index()
         {  
             return View();
         }
+        [Authorize(Roles ="User")]
         public async Task<IActionResult> Create()
         {
             MovieCreateViewModel createModel = new MovieCreateViewModel();
 
-            var genres = await _mediaWebDbContext.Genres.ToListAsync();
-
-            if (genres != null)
-            {
-                foreach (var genre in genres)
+            //create selectlist of existing gneres
+            var genres = await _mediaWebDbContext.Genres.Select(genre => new SelectListItem()
                 {
-                    createModel.Genres.Add(new SelectListItem()
-                    {
-                        Value = genre.Id.ToString(),
-                        Text = genre.Name
-                    });
-                }
-            }
+                     Value = genre.Id.ToString(),
+                     Text = genre.Name
+                }).ToListAsync();
+
+            createModel.Genres = genres;              
 
             return View(createModel);
         }
         [HttpPost]
         public async Task<IActionResult> Create(MovieCreateViewModel createModel)
         {
+            //check for duplicate
+            List<string> movieTitlesFromDb = await _mediaWebDbContext.Movies.Select(m => m.Title).ToListAsync();
+           
+            if (movieTitlesFromDb.Contains(StringEdits.FirstLettterToUpper(createModel.Title)))
+            {
+                return RedirectToAction("Index");
+            }
+
+            //create if no duplicate
             Movie newMovie = new Movie()
             {
                 Title = StringEdits.FirstLettterToUpper(createModel.Title),
                 ReleaseDate = createModel.ReleaseDate,
                 Summary = createModel.Summary,
-                Photo = UploadUtility.UploadFile(createModel.Photo, "pics", _hostingEnvironment)                
+                Photo = UploadUtility.UploadFile(createModel.Photo, "pics", _hostingEnvironment),
+                IsHidden = false
             };
 
             //Add genres to movie
@@ -95,7 +103,7 @@ namespace MediaWeb.Controllers
 
                 foreach (var newGenre in newGenres)
                 {
-                    movieGenres.Add(new MovieGenre() { GenreId = newGenre.Id, Genre = newGenre});
+                    movieGenres.Add(new MovieGenre() {Genre = newGenre});
                 }
             }            
 
@@ -115,6 +123,7 @@ namespace MediaWeb.Controllers
 
                 foreach (var createdActor in createdActorsArray)
                 {
+                    //check for duplicates
                     if (!actorsFromDb.Select(g => g.Name).Contains(createdActor))
                     {
                         newActors.Add(new Actor() { Name = createdActor });
@@ -127,11 +136,13 @@ namespace MediaWeb.Controllers
 
                 foreach (var newActor in newActors)
                 {
-                    movieActors.Add(new MovieActor() { ActorId = newActor.Id, Actor = newActor });
+                    movieActors.Add(new MovieActor() {Actor = newActor });
                 }
             }
 
-            //add direcotsr to movie
+            newMovie.MovieActors = movieActors;
+
+            //add directors to movie
             var movieDirectors = new List<MovieDirector>();
 
             //create only if new directors
@@ -157,9 +168,11 @@ namespace MediaWeb.Controllers
 
                 foreach (var newDirector in newDirectors)
                 {
-                    movieDirectors.Add(new MovieDirector() { DirectorId = newDirector.Id, Director = newDirector });
+                    movieDirectors.Add(new MovieDirector() {Director = newDirector });
                 }
             }
+
+            newMovie.MovieDirectors = movieDirectors;
 
             _mediaWebDbContext.Update(newMovie);
             await _mediaWebDbContext.SaveChangesAsync();
@@ -186,9 +199,14 @@ namespace MediaWeb.Controllers
                 await _mediaWebDbContext.Movies
                 .Include(movie => movie.MovieGenres)
                 .ThenInclude(movieGenre => movieGenre.Genre)
+                .Include(movie => movie.MovieDirectors)
+                .ThenInclude(movieDirector => movieDirector.Director)
+                .Include(movie => movie.MovieActors)
+                .ThenInclude(movieActor => movieActor.Actor)
                 .Include(movie => movie.MovieReviews)
                 .ThenInclude(movieReview => movieReview.Review)
-                .FirstOrDefaultAsync(m => m.Id == id);                
+                .ThenInclude(review => review.MediaWebUser)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             MovieDetailViewModel detailModel = new MovieDetailViewModel()
             {
@@ -197,8 +215,11 @@ namespace MediaWeb.Controllers
                 ReleaseDate = movieFromDb.ReleaseDate,
                 Summary = movieFromDb.Summary,
                 Photo = movieFromDb.Photo,
-                MovieGenres = movieFromDb.MovieGenres.Select(movieGenre => movieGenre.Genre.Name),
-                MovieReviews = movieFromDb.MovieReviews
+                MovieGenres = movieFromDb.MovieGenres,
+                MovieReviews = movieFromDb.MovieReviews.Where(mr => mr.Review.IsChecked == true),
+                MovieDirectors = movieFromDb.MovieDirectors,
+                MovieActors = movieFromDb.MovieActors,
+                IsHidden = movieFromDb.IsHidden
             };
 
             return View(detailModel);
@@ -212,7 +233,8 @@ namespace MediaWeb.Controllers
             {
                 Title = movieFromDb.Title,
                 ReleaseDate = movieFromDb.ReleaseDate,
-                Summary = movieFromDb.Summary
+                Summary = movieFromDb.Summary,
+                PhotoUrl = movieFromDb.Photo
             };
 
             return View(editModel);
@@ -225,13 +247,21 @@ namespace MediaWeb.Controllers
             movieFromDb.Title = editModel.Title;
             movieFromDb.ReleaseDate = editModel.ReleaseDate;
             movieFromDb.Summary = editModel.Summary;
-            movieFromDb.Photo = UploadUtility.UploadFile(editModel.Photo, "pics", _hostingEnvironment);            
+
+            if (editModel.Photo != null)
+            {
+                movieFromDb.Photo = UploadUtility.UploadFile(editModel.Photo, "pics", _hostingEnvironment);
+            }
+            else
+            {
+                movieFromDb.Photo = editModel.PhotoUrl;
+            }                     
 
             await _mediaWebDbContext.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             Movie movieFromDb = await _mediaWebDbContext.Movies.FirstOrDefaultAsync(m => m.Id == id);
@@ -248,7 +278,24 @@ namespace MediaWeb.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             Movie movieFromDb = await _mediaWebDbContext.Movies.FirstOrDefaultAsync(m => m.Id == id);
+
+            //delete file aswell
+            if (!string.IsNullOrEmpty(movieFromDb.Photo))
+            {
+                _uploadUtility.DeleteFile(_hostingEnvironment.WebRootPath, movieFromDb.Photo);
+            }
+            
             _mediaWebDbContext.Movies.Remove(movieFromDb);
+            await _mediaWebDbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> HideMovie(int id)
+        {
+            Movie movieFromDb = await _mediaWebDbContext.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            movieFromDb.IsHidden = true;
+
             await _mediaWebDbContext.SaveChangesAsync();
 
             return RedirectToAction("Index");
